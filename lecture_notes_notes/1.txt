@@ -5,6 +5,30 @@ Real X(Outcome omege) {
 
 `P(X \in A)`
 Probability P(Set<Outcome> A, RandomVariable X) {
-	Set<Real> range = range(X)
-	return range.where(lambda real: real \in A)
-}  
+	Set<Real> range = range(X).where(lambda real: real \in A)
+	Set<Outcome> omega = domain(range)
+	return P(omega)
+}
+
+`X ~ P`:
+X has distribution P
+
+`CDF` F_{X}(x) = F(x) = P(X <= x):
+RandomVariable X
+Real x 
+Set<Real> A = range(X).where(lamba y: x <= y)
+CDF = P(X \in A)
+
+`Properties of CDF`:
+right-continuous:
+	F(x) = lim _ {n -> \infty} F(y_{n}) if y_{n} -> x, y_{n} > x
+	if we know a sequence that converges to x in domain, only need to know output values of terms of the sequence to compute F(x)
+non-decreasing:
+	
+normalized
+
+`pmf` p_{X}(x) = p(x) = :
+Probability p(RandomVariable X, Real x){
+	Set<Real> A = range(X).where(lambda y: y == x)
+	return P(X \in A)
+}
