@@ -1,0 +1,10 @@
+`Random Variable`:
+
+Real X(Outcome omege) {
+}
+
+`P(X \in A)`
+Probability P(Set<Outcome> A, RandomVariable X) {
+	Set<Real> range = range(X)
+	return range.where(lambda real: real \in A)
+}  
