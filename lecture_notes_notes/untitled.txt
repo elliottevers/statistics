@@ -1,0 +1,276 @@
+`Random Variable`:
+    typedef Function<Outcome -> Real>
+
+`Event`:
+    typedef Set<Outcome> Event
+
+How do we assign probabilities to outcomes?
+    1. Classical, Axiomatic (all outcomes have same weight)
+    2. Relative Frequency (using the frequencies in past data)
+    3. Subjective (degree of belief)
+    
+`P(X = x)`:
+
+    Probability P(Real x, RandomVariable X) {
+        Set<Real> range = range(X).where(lambda y: y == x)
+        Event omega = domain(range)
+        return P(omega)
+    }
+    
+    
+`P(X \in A)`
+
+    Probability P(Set<Real> A, RandomVariable X) {
+        Event omega = domain(A)
+        return P(omega)
+    }
+
+
+`X ~ P`:
+    X has distribution P
+
+
+`CDF` F_{X}(x) = F(x) = P(X <= x):
+
+    Probability CDF(RandomVariable X, Real x){
+        Set<Real> A = range(X).where(lamba y: x <= y)
+        return P(X \in A)
+    }
+
+
+Properties of `CDF`:
+
+    1) right-continuous:
+        F(x) = lim _ {n -> \infty} F(y_{n}) if y_{n} -> x, y_{n} > x
+            if we know a sequence that converges to x in domain, only need to know output values of terms of the sequence to compute F(x)
+
+    2) non-decreasing:
+        x < y => F(x) <= F(Y)
+            If all we want to do is compare the size of two outputs, we only have to compare inputs
+
+    3) normalized:
+        lim _ {x -> - \infty} F(x) = 0, lim _ {x -> \infty} F(x) = 1
+
+
+`pmf` p_{X}(x) = p(x):
+
+    Probability pmf(RandomVariable X, Real x){
+        assert(x \in range(X))
+        Set<Real> A = range(X).where(lambda y: y == x)
+        return P(X \in A)
+    }
+
+
+`pdf` p_{X}(x) = p(x) = F'(x):
+
+    Probability pdf(RandomVariable X, Region A){
+        assert(A \subseteq range(X))
+        return integral(
+            partial(pmf, X=X),
+            Region = A
+        )
+    }
+    
+
+`Expected Value`:
+
+    Real E(RandomVariable X){
+        return integral(
+            X * pdf(X),
+            start = - \infty,
+            end = \infty
+        )
+    }
+
+
+Properties:
+    Expectations are linear
+
+    Expectation of product is the product of expectations
+
+    μ is used to hold an expectation
+    
+    E(
+        product(
+            X - μ_{X},
+            Y - μ_{Y}
+        )
+    ) =
+    E(
+        product(
+            X,
+            Y
+        ) - product(
+            μ_{X},
+            μ_{Y}
+        )
+    )
+
+`Variance`:
+
+    var(X) = σ^2 = E((X - μ)^2) = E(X^2) - μ^2
+
+    var(sum(a_i * X_i)) = sum(a_i^2 * var(X_i))
+
+`Standard Deviation`:
+
+    Real std(RandomVariable X){
+        return sqrt(var(X))
+    }
+
+`Covariance`:
+
+    Real cov(RandomVariable X, RandomVariable Y){
+        return E(
+            product(
+                X - μ_{X},
+                Y - μ_{Y}
+            )
+        )
+    }
+
+`Correlation`:
+
+    Real correlation(RandomVariable X, RandomVariable Y){
+        return cov(X, Y)/(std(X) * std(Y))
+    }
+
+
+Properties of `Correlation`:
+    
+    bounded by -1 below and 1 above
+
+joint distribution: Matrix<Tuple<Real>>
+
+marginal distribution: look at joint distribution in a specific direction, and sum all of the things you can't see to produce a sort of "heat map"
+
+conditional distribution: draw a hyperplane from the conditioned variables and visualize the intersection with the joint distribution
+
+pmfs assign probabilities to each of the elements in the range of a random variable
+pdfs assign probabilities to regions of the range of a random variable
+
+# TODO: revise the next 4 definitions
+
+`Joint PDF`:
+
+`Marginal PDF`:
+    Real marginal_pdf(RandomVariable X, RandomVariable Y, Real x){
+        return integral(
+            wrt=Y
+        )
+    }
+
+`Conditional PDF`:
+    # http://educ.jmu.edu/~chen3lx/math426/chapter3partVIII.pdf
+    Real conditional_pdf(RandomVariable givenX, RandomVariable Y){
+        return joint_pdf(givenX, Y)/marginal_pdf(givenX)
+    }
+    
+`Conditional Expectation`:
+    # https://www.youtube.com/watch?v=s6IAjOhcPQU
+    RandomVariable conditional_E(RandomVariable X, RandomVariable Y, Real x){
+        assert(x \in range(X))
+        return integral(
+            Y,
+            conditional_pdf(
+                
+            )
+        )
+    }
+
+
+Law of Total Expectation/Iterated Expectation:
+
+https://www.youtube.com/watch?v=Ki2HpTCPwhM
+
+
+
+Moment Generating Function:
+
+Real mgf(RandomVariable X, Real t){
+    RandomVariable exponential = e^t*X
+    return E(exponential)
+}
+
+
+mgf - alternative representation of probability distribution
+
+https://en.wikipedia.org/wiki/Moment_(mathematics)
+
+https://www.youtube.com/watch?v=OKdjid9FeKk
+
+mgf of sum of random variables is the product of mgfs
+
+
+Transformations of random variables - if we know X and g and Y = g(X), how do we calculate the the CDF or PDF of Y?
+
+## Independence
+
+X, Y are independent <=> P(X \in A, Y \in B) = P(X \in A)P(Y \in B)
+
+## Important Distributions
+
+Uniform
+
+Gaussian
+    - density of Gaussian
+    - density in arbitrary dimensions
+
+Chi-Squared
+    - sum of k (called degrees of freedom?) normal distribution
+    
+Bernoulli
+    - modeling a coin flip with probability of heads θ
+
+Binomial
+    - modeling indefinite coin flips with probability of heads θ
+
+Poisson
+    - used to model the number of times an event occurs in a time interval
+    - the mass function looks eerily like the terms of the moment generating function
+    
+Multinomial
+    - used to model drawing indefinite numbers of balls of n different colors, with relative frequencies p
+    
+Exponential
+
+Gamma
+
+Beta
+
+
+## Sample Mean and Variance
+
+
+`Sample Mean`:
+
+    Real sample_mean(RandomVariable X, Nat n){
+        List<RandomVariable> samples = [X_i for i in range(n)]
+        return sum(samples)/n
+    }
+
+`Sample Variance`:
+    
+    Real sample_variance(RandomVariable X, Nat n){
+        List<RandomVariables> differences = [X_i - sample_mean(X, n) for i in range(n)]
+        return sum(differences)/(n-1)
+    }
+
+`Sampling Distribution` G_{n}(t):
+    
+    Probability sampling_distribution(RandomVariable X, Real t){
+        Set<Real> A = range(X).where(lambda x: x <= t)
+        return P(A)
+    }
+
+Properties:
+
+Expectation of sample mean is exactly the mean of each of the identically distributed random variables
+
+Variance of the sample mean is the variance of each of the identically distributed random variables *divided by sample size*
+
+Bias - the difference between the expectation of the parameter and the true value of the parameter
+
+
+
+
