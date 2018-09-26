@@ -70,11 +70,21 @@ Properties of `CDF`:
             Region = A
         )
     }
-    
 
-`Expected Value`:
+`Expected Value of Discrete`:
 
-    Real E(RandomVariable X){
+    Real E(RandomVariable X | X is discrete){
+        List<Real> values = range(X)
+        List<Probability> probabilities = [P(value) for value in values]
+        return dot(
+            values,
+            probabilities
+        )
+    }
+
+`Expected Value of Continuous Variable`:
+
+    Real E(RandomVariable X | X is continuous){
         return integral(
             X * pdf(X),
             start = - \infty,
