@@ -254,15 +254,18 @@ Beta
 
 `Sample Mean`:
 
-    Real sample_mean(RandomVariable X, Nat n){
-        List<RandomVariable> samples = [X_i for i in range(n)]
+    Real sample_mean(RandomVariable... X){
+        # in this context, a single sample is essentially equivalent to one of the iid 
+        Integer n = length(X)
+        List<Real> samples = [x_i for x_i in X]
         return sum(samples)/n
     }
 
 `Sample Variance`:
     
-    Real sample_variance(RandomVariable X, Nat n){
-        List<RandomVariables> differences = [X_i - sample_mean(X, n) for i in range(n)]
+    Real sample_variance(RandomVariable... X){
+        Integer n = length(X)
+        List<Real> differences = [x_i - sample_mean(X) for x_i in X]
         return sum(differences)/(n-1)
     }
 
