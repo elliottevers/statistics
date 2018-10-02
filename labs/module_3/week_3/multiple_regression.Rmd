@@ -1,40 +1,42 @@
 ---
 title: "Multiple linear regression"
-output: html_notebook
-
 references:
-- id: Hamermesh2005
-  title: Beauty in the Classroom - Instructors' Pulchritude and Putative Pedagogical Productivity
+- DOI: 10.1016/j.econedurev.2004.07.013
+  ISSN: 0272-7757
+  URL: http://www.sciencedirect.com/science/article/pii/S0272775704001165
   author:
   - family: Hamermesh
     given: Daniel S.
   - family: Parker
     given: Amy
-  volume: 24
-  URL: 'http://www.sciencedirect.com/science/article/pii/S0272775704001165'
-  DOI: 10.1016/j.econedurev.2004.07.013
-  publisher: Economics of Education Review
-  ISSN: 0272-7757
+  id: Hamermesh2005
   issue: 4
-  page: 369-376
-  type: article-journal
   issued:
-    year: 2005
     month: 8
-- id: Gelman2007
-  title: Data Analysis Using Regression and Multilevel/Hierarchical Models
+    year: 2005
+  page: 369-376
+  publisher: Economics of Education Review
+  title: Beauty in the Classroom - Instructors' Pulchritude and Putative Pedagogical
+    Productivity
+  type: article-journal
+  volume: 24
+- ISBN: null
   author:
   - family: Gelman
     given: Andrew
   - family: Hill
     given: Jennifer
-  publisher: Cambridge University Press
-  city:
-  type: book
+  city: null
+  edition: 1
+  id: Gelman2007
   issued:
     year: 2007
-  edition: 1
-  ISBN: 9780521686891
+  publisher: Cambridge University Press
+  title: Data Analysis Using Regression and Multilevel/Hierarchical Models
+  type: book
+output:
+  html_document:
+    df_print: paged
 ---
 
 <div id="instructions">
